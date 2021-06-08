@@ -454,3 +454,34 @@ $ touch .gitignore READ.md
 
   
 
+### pull
+
+- pull 명령어는 원격저장소에서 `fetch`명령어로 가져온 후 `merge`까지 한번에 해 실제 파일의 내용이 변경되는 명령어ㅇ다.
+
+- `git pull` 저장소 `master`(branch 명) 
+
+  ```
+  $ git pull origin master
+  remote: Enumerating objects: 20, done.
+  remote: Counting objects: 100% (20/20), done.
+  remote: Compressing objects: 100% (17/17), done.
+  remote: Total 17 (delta 8), reused 0 (delta 0), pack-reused 0
+  Unpacking objects: 100% (17/17), 6.00 MiB | 5.30 MiB/s, done.
+  From https://github.com/goareum93/K-digital-training
+   * branch            master     -> FETCH_HEAD
+     627e2a3..ecbd537  master     -> origin/master
+  Updating 627e2a3..ecbd537
+  Fast-forward
+   02_GIT/3_yolov5.ipynb    | 433 +++++++++++++++++++++++++++++++++++++++++++++++
+   03_Pandas/20210608.mp4   | Bin 0 -> 5845605 bytes
+   03_Pandas/3_yolov5.ipynb | 433 +++++++++++++++++++++++++++++++++++++++++++++++
+   03_Pandas/elephant2.png  | Bin 0 -> 843231 bytes
+   4 files changed, 866 insertions(+)
+   create mode 100644 02_GIT/3_yolov5.ipynb
+   create mode 100644 03_Pandas/20210608.mp4
+   create mode 100644 03_Pandas/3_yolov5.ipynb
+   create mode 100644 03_Pandas/elephant2.png
+  ```
+
+  
+
