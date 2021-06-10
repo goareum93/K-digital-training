@@ -467,17 +467,9 @@ Reference : https://ichi.pro/ko/deiteoleul-eotteohge-eonje-wae-jeong-gyuhwa-pyoj
 
 - 공분산 행렬(covariance matrix) 
 
-- Linear transformations ? 
+- Linear transformations 
 
-- Eigenvalues ?
+- Eigenvalues 
 
 - Principal Component Analysis(PCA)
-
-Reference :
-
-https://youtu.be/g-Hb26agBFg
-
-- regression vs classification?
-
-  
 
