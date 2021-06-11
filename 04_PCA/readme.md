@@ -213,7 +213,7 @@ https://angeloyeo.github.io/2019/07/27/PCA.html
 $$
 Av =b
 $$
-즉, 행렬 A를 이용해 벡터 v를 b로 변환한 것. 이 괒어을 선형 변황이라고 함. 혹은 벡터 v를 다른 벡터 b로 매핑(maps)했다고 함.
+즉, 행렬 A를 이용해 벡터 v를 b로 변환한 것. 이런 과정을 선형 변환이라고 함. 혹은 벡터 v를 다른 벡터 b로 매핑(maps)했다고 함.
 $$
 A\qquad\quad v\qquad\qquad		b\\
 
