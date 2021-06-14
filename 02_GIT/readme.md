@@ -8,8 +8,6 @@
 
 Git이란 소스코드를 효과적으로 관리하기 위해 개발된 '분산형 버전 관리 시스템'이다.
 
-
-
 ### Summary
 
 1. 프로젝트 폴더(디렉토리)를 만든다.
@@ -406,13 +404,13 @@ $ touch .gitignore READ.md
 
 - github 로그인 후 Repositories 에서 New 버튼을 누른다.
 
-![image-20210604144643126](git_basic.assets/image-20210604144643126.png)
+![image-20210604144643126](readme.assets/image-20210604144643126.png)
 
 - 이후 repository name에 원격저장소 이름을 작성하고 공개여부를 설정 한 후(Public / Private) Create repository 클릭
 
   - (Tip) Add a README.File 등의 파일은 작성되어 있으면 체크할 필요 없음
 
-  ![image-20210604144826768](git_basic.assets/image-20210604144826768.png)
+  ![image-20210604144826768](readme.assets/image-20210604144826768.png)
 
 ### remote
 
