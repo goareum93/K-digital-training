@@ -148,40 +148,40 @@
 
 #### JOIN
 
-```sql
-# LEFT JOIN => FROM 절의 테이블 기준으로 매칭되는 정보 호출
-select a.orderNumber, b.country from classicmodels.orders A LEFT JOIN classicmodels.customers B ON a.customerNumber = b.customerNumber
-select a.orderNumber, b.country from classicmodels.orders A LEFT JOIN classicmodels.customers B ON a.customerNumber = b.customerNumber
-where b.country = 'USA';
+  ```sql
+  # LEFT JOIN => FROM 절의 테이블 기준으로 매칭되는 정보 호출
+  select a.orderNumber, b.country from classicmodels.orders A LEFT JOIN classicmodels.customers B ON a.customerNumber = b.customerNumber
+  select a.orderNumber, b.country from classicmodels.orders A LEFT JOIN classicmodels.customers B ON a.customerNumber = b.customerNumber
+  where b.country = 'USA';
 
-# INNER JOIN => 교집합만 출력
-select a.orderNumber, b.country from classicmodels.orders A INNER JOIN classicmodels.customers B ON a.customerNumber = b.customerNumber
-where b.country = 'USA';
+  # INNER JOIN => 교집합만 출력
+  select a.orderNumber, b.country from classicmodels.orders A INNER JOIN classicmodels.customers B ON a.customerNumber = b.customerNumber
+  where b.country = 'USA';
 
-# FULL JOIN => 거의 사용하지 않음
-```
+  # FULL JOIN => 거의 사용하지 않음
+  ```
 
 
 
 #### CASE WHEN
 
-```sql
-## CASE WHEN
-select country, case when country in ('USA', 'Canada') then 'North Ameria' else 'Others' end as region from classicmodels.customers;
+  ```sql
+  ## CASE WHEN
+  select country, case when country in ('USA', 'Canada') then 'North Ameria' else 'Others' end as region from classicmodels.customers;
 
-select case when country in ('USA', 'Canada') then 'North Ameria' 
-else 'Others' end as region, 
-count(customerNumber) N_customer 
-from classicmodels.customers
-group
-by case when country in ('USA', 'Canada') then 'North Ameria' else 'Others' end;
+  select case when country in ('USA', 'Canada') then 'North Ameria' 
+  else 'Others' end as region, 
+  count(customerNumber) N_customer 
+  from classicmodels.customers
+  group
+  by case when country in ('USA', 'Canada') then 'North Ameria' else 'Others' end;
 
-select case when country in ('USA', 'Canada') then 'North Ameria' 
-else 'Others' end as region, 
-count(customerNumber) N_customer 
-from classicmodels.customers
-group
-by 1;
+  select case when country in ('USA', 'Canada') then 'North Ameria' 
+  else 'Others' end as region, 
+  count(customerNumber) N_customer 
+  from classicmodels.customers
+  group
+  by 1;
 ```
 
 
