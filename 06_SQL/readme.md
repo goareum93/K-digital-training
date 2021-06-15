@@ -182,7 +182,7 @@
   from classicmodels.customers
   group
   by 1;
-```
+  ```
 
 
 
