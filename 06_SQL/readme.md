@@ -148,7 +148,6 @@
 
 #### JOIN
 
-<<<<<<< HEAD
 - JOIN => 테이블 결합함수
 
   ```sql
@@ -164,70 +163,36 @@
   # FULL JOIN => 거의 사용하지 않음
   ```
 
-  
-=======
-  ```sql
-  # LEFT JOIN => FROM 절의 테이블 기준으로 매칭되는 정보 호출
-  select a.orderNumber, b.country from classicmodels.orders A LEFT JOIN classicmodels.customers B ON a.customerNumber = b.customerNumber
-  select a.orderNumber, b.country from classicmodels.orders A LEFT JOIN classicmodels.customers B ON a.customerNumber = b.customerNumber
-  where b.country = 'USA';
 
-  # INNER JOIN => 교집합만 출력
-  select a.orderNumber, b.country from classicmodels.orders A INNER JOIN classicmodels.customers B ON a.customerNumber = b.customerNumber
-  where b.country = 'USA';
 
-  # FULL JOIN => 거의 사용하지 않음
-  ```
->>>>>>> 68e0881faa68723a0b326137d3c8f80158ff5acc
 
 #### CASE WHEN
 
 - SELECT CASE WHEN 조건 1 TEHN 결과1
 
   WHEN 조건 2 THEN 결과 2 ELSE 결과 3 END
-
-<<<<<<< HEAD
+  
   FROM 데이터베이스.테이블 명;
-=======
-  ```sql
-  ## CASE WHEN
-  select country, case when country in ('USA', 'Canada') then 'North Ameria' else 'Others' end as region from classicmodels.customers;
-
-  select case when country in ('USA', 'Canada') then 'North Ameria' 
-  else 'Others' end as region, 
-  count(customerNumber) N_customer 
-  from classicmodels.customers
-  group
-  by case when country in ('USA', 'Canada') then 'North Ameria' else 'Others' end;
-
-  select case when country in ('USA', 'Canada') then 'North Ameria' 
-  else 'Others' end as region, 
-  count(customerNumber) N_customer 
-  from classicmodels.customers
-  group
-  by 1;
-  ```
->>>>>>> 68e0881faa68723a0b326137d3c8f80158ff5acc
-
-  ```sql
-  ## CASE WHEN
-  select country, case when country in ('USA', 'Canada') then 'North Ameria' else 'Others' end as region from classicmodels.customers;
   
-  select case when country in ('USA', 'Canada') then 'North Ameria' 
-  else 'Others' end as region, 
-  count(customerNumber) N_customer 
-  from classicmodels.customers
-  group
-  by case when country in ('USA', 'Canada') then 'North Ameria' else 'Others' end;
+  ```sql
+    ## CASE WHEN
+    select country, case when country in ('USA', 'Canada') then 'North Ameria' else 'Others' end as region from classicmodels.customers;
   
-  select case when country in ('USA', 'Canada') then 'North Ameria' 
-  else 'Others' end as region, 
-  count(customerNumber) N_customer 
-  from classicmodels.customers
-  group
-  by 1;
+    select case when country in ('USA', 'Canada') then 'North Ameria' 
+    else 'Others' end as region, 
+    count(customerNumber) N_customer 
+    from classicmodels.customers
+    group
+    by case when country in ('USA', 'Canada') then 'North Ameria' else 'Others' end;
+  
+    select case when country in ('USA', 'Canada') then 'North Ameria' 
+    else 'Others' end as region, 
+    count(customerNumber) N_customer 
+    from classicmodels.customers
+    group
+    by 1;
   ```
-
+  
   
 
 ## 데이터 분석을 위한 파이썬 연동 SQL 사용 실습  
