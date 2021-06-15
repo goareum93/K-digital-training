@@ -34,6 +34,10 @@
 
 
 
+- 주의 :  SQL 종료시 반드시 File 에서 Close Connection Tab (Ctrl+Shift+F4)로 종료할 것
+
+  
+
 #### SELECT
 
 - SELECT : 선택하고자 하는 속성목록을 기술
