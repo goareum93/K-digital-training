@@ -2,7 +2,7 @@
 
 이 자료는 정준수 강사님의 강의를 바탕으로 작성한 것입니다.
 
-강의날짜 : 2021.6.14 ~ 6.16
+강의날짜 : 2021.6.14 ~ 6.17
 
 
 
@@ -200,7 +200,6 @@
     group
     by 1;
   ```
-  
 
 
 
@@ -515,3 +514,42 @@ https://and-some.tistory.com/187
 
   따라서 매출증대를 위해 저녁시간대 인원수 2명의 남성을 위한 마케팅전략이 필요하다.
 
+## Feature Selection 실습
+
+실습파일:
+
+- target_total_bill.ipynb
+- target_tip.ipynb
+
+
+
+- Feature selection 이란?
+
+  - 불분명한 관계없는 feature를 머신러닝 모델 트레이닝에 쓰면 negative impact를 준다.
+  - 사이킷런 라이브러리를 활용함으로 feature selection을 automatic하게 찾을 수 있다.
+  - Feature selection을 써서 오버 피팅(Overfitting)문제를 낮춘다. 불필요한 데이터를 적게(Less Redundant data)사용하여 적은 확률로 노이즈에 관한 판단을 한다.
+  - Feature selection으로 정확도를 올릴 수 있고, 트레이닝 시간을 줄일 수 있다.
+
+  
+
+![image-20210617173439147](readme.assets/image-20210617173439147.png)
+
+
+
+![image-20210617173455078](readme.assets/image-20210617173455078.png)
+
+
+
+
+
+## RFE (Recursive Feature Elimination)
+
+- 반복적으로 피쳐를 지움으로써 남겨진 피쳐를 사용한다.
+
+  
+
+## PCA(Principal Component Analysis)
+
+- 
+
+  ![image-20210617173404739](readme.assets/image-20210617173404739.png)
