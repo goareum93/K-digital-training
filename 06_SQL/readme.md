@@ -518,8 +518,8 @@ https://and-some.tistory.com/187
 
 실습파일:
 
-- target_total_bill.ipynb
-- target_tip.ipynb
+- [target_total_bill.ipynb](https://github.com/goareum93/K-digital-training/blob/master/06_SQL/04_feature_selection/target_total_bill.ipynb)
+- [target_tip.ipynb](https://github.com/goareum93/K-digital-training/blob/master/06_SQL/04_feature_selection/target_tip.ipynb)
 
 
 
