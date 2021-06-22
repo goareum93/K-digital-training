@@ -532,12 +532,6 @@ https://and-some.tistory.com/187
 
   
 
-![image-20210617173439147](readme.assets/image-20210617173439147.png)
-
-
-
-![image-20210617173455078](readme.assets/image-20210617173455078.png)
-
 
 
 
@@ -553,3 +547,26 @@ https://and-some.tistory.com/187
 - 
 
   ![image-20210617173404739](readme.assets/image-20210617173404739.png)
+
+## 실습
+
+### Target : Total bill -> PCA without Mutate Variable tip rate 
+
+
+
+### Target : Total bill ->  RFA without Mutate Variable tip rate 
+
+
+
+### Target : Total bill ->  Regression Feature Selection without Mutate Variable tip rate 
+
+
+
+### Normalize
+
+
+
+## Standardization
+
+
+
