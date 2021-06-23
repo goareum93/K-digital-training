@@ -1,8 +1,8 @@
 # Django
 
-2021.06.23 일 수업내용 기준으로 작성한 것입니다.
+2021.06.23~24일 수업내용 기준으로 작성한 것입니다.
 
-
+![img](https://i.stack.imgur.com/rLfSC.jpg)
 
 ## 설치하기
 
@@ -227,7 +227,7 @@ MySQL에서 새로고침? 버튼을 누르면 아래와 같이 테이블을 불�
 
 
 
-## Superuser 만들기
+### Superuser 만들기
 
 https://kamang-it.tistory.com/entry/Django-02superuser-%EB%A7%8C%EB%93%A4%EA%B8%B0
 
@@ -288,4 +288,362 @@ add user을 누르고
 ![image-20210623013048666](readme.assets/image-20210623013048666.png)
 
 
+
+
+
+### 모델만들기
+
+이제, 모델을 정의해 보겠습니다. 본질적으로, 모델이란 부가적인 메타데이터를 가진 데이터베이스의 구조(layout)를 말합니다.
+
+
+
+polls/models.py 파일에 아래 코드를 작성한다.
+
+```shell
+from django.db import models
+
+
+class Question(models.Model):
+    question_text = models.CharField(max_length=200)
+    pub_date = models.DateTimeField('date published')
+
+
+class Choice(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    choice_text = models.CharField(max_length=200)
+    votes = models.IntegerField(default=0)
+```
+
+
+
+### 모델의 활성화
+
+모델에 대한 이 작은 코드가, Django에게는 상당한 양의 정보를 전달합니다. Django는 이 정보를 가지고 다음과 같은 일을 할 수 있습니다.
+
+- 이 앱을 위한 데이터베이스 스키마 생성(`CREATE TABLE` 문)
+- `Question`과 `Choice` 객체에 접근하기 위한 Python 데이터베이스 접근 API를 생성
+
+그러나, 가장 먼저 현재 프로젝트에게 `polls` 앱이 설치되어 있다는 것을 알려야 합니다.
+
+
+
+앱을 현재의 프로젝트에 포함시키기 위해서는, 앱의 구성 클래스에 대한 참조를 [`INSTALLED_APPS`](https://docs.djangoproject.com/ko/3.2/ref/settings/#std:setting-INSTALLED_APPS) 설정에 추가해야 합니다. `PollsConfig` 클래스는 `polls/apps.py` 파일 내에 존재합니다. 따라서, 점으로 구분된 경로는 `'polls.apps.PollsConfig'`가 됩니다. 이 점으로 구분된 경로를, `mysite/settings.py` 파일을 편집하여 [`INSTALLED_APPS`](https://docs.djangoproject.com/ko/3.2/ref/settings/#std:setting-INSTALLED_APPS) 설정에 추가하면 됩니다. 이는 다음과 같이 보일 것입니다.
+
+```shell
+INSTALLED_APPS = [
+    'polls.apps.PollsConfig',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+]
+```
+
+
+
+command 창에서 다음을 입력한다
+
+```shell
+$ python manage.py sqlmigrate polls 0001
+```
+
+![image-20210623104034370](readme.assets/image-20210623104034370.png)
+
+이제, [`migrate`](https://docs.djangoproject.com/ko/3.2/ref/django-admin/#django-admin-migrate) 를 실행시켜 데이터베이스에 모델과 관련된 테이블을 생성
+
+```
+$ python manage.py migrate
+```
+
+![image-20210623113414968](readme.assets/image-20210623113414968.png)
+
+
+
+### API 가지고 놀기
+
+이제, 대화식 Python 쉘에 뛰어들어 Django API를 자유롭게 가지고 놀아봅시다. Python 쉘을 실행하려면 다음의 명령을 입력합니다.
+
+```
+$ python manage.py shell
+```
+
+```shell
+>>> from polls.models import Choice, Question  # Import the model classes we just wrote.
+
+# No questions are in the system yet.
+>>> Question.objects.all()
+<QuerySet []>
+
+# Create a new Question.
+# Support for time zones is enabled in the default settings file, so
+# Django expects a datetime with tzinfo for pub_date. Use timezone.now()
+# instead of datetime.datetime.now() and it will do the right thing.
+>>> from django.utils import timezone
+>>> q = Question(question_text="What's new?", pub_date=timezone.now())
+
+# Save the object into the database. You have to call save() explicitly.
+>>> q.save()
+
+# Now it has an ID.
+>>> q.id
+1
+
+# Access model field values via Python attributes.
+>>> q.question_text
+"What's new?"
+>>> q.pub_date
+datetime.datetime(2012, 2, 26, 13, 0, 0, 775217, tzinfo=<UTC>)
+
+# Change values by changing the attributes, then calling save().
+>>> q.question_text = "What's up?"
+>>> q.save()
+
+# objects.all() displays all the questions in the database.
+>>> Question.objects.all()
+<QuerySet [<Question: Question object (1)>]>
+```
+
+여기서 잠깐. `<Question: Question object (1)>`은 이 객체를 표현하는 데 별로 도움이 되지 않습니다. (`polls/models.py` 파일의) `Question` 모델을 수정하여, [`__str__()`](https://docs.djangoproject.com/ko/3.2/ref/models/instances/#django.db.models.Model.__str__) 메소드를 `Question`과 `Choice`에 추가해 봅시다.
+
+
+
+```shell
+from django.db import models
+
+class Question(models.Model):
+    # ...
+    def __str__(self):
+        return self.question_text
+
+class Choice(models.Model):
+    # ...
+    def __str__(self):
+        return self.choice_text
+```
+
+이 모델에 커스텀 메소드 또한 추가해봅시다:
+
+```shell
+import datetime
+
+from django.db import models
+from django.utils import timezone
+
+
+class Question(models.Model):
+    # ...
+    def was_published_recently(self):
+        return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
+```
+
+![image-20210623113701994](readme.assets/image-20210623113701994.png)
+
+변경된 사항을 저장하고, `exit()` 후`python manage.py shell`를 다시 실행해보세요.
+
+```shell
+>>> from polls.models import Choice, Question
+
+# Make sure our __str__() addition worked.
+>>> Question.objects.all()
+<QuerySet [<Question: What's up?>]>
+
+# Django provides a rich database lookup API that's entirely driven by
+# keyword arguments.
+>>> Question.objects.filter(id=1)
+<QuerySet [<Question: What's up?>]>
+>>> Question.objects.filter(question_text__startswith='What')
+<QuerySet [<Question: What's up?>]>
+
+# Get the question that was published this year.
+>>> from django.utils import timezone
+>>> current_year = timezone.now().year
+>>> Question.objects.get(pub_date__year=current_year)
+<Question: What's up?>
+
+# Request an ID that doesn't exist, this will raise an exception.
+>>> Question.objects.get(id=2)
+Traceback (most recent call last):
+    ...
+DoesNotExist: Question matching query does not exist.
+
+# Lookup by a primary key is the most common case, so Django provides a
+# shortcut for primary-key exact lookups.
+# The following is identical to Question.objects.get(id=1).
+>>> Question.objects.get(pk=1)
+<Question: What's up?>
+
+# Make sure our custom method worked.
+>>> q = Question.objects.get(pk=1)
+>>> q.was_published_recently()
+True
+
+# Give the Question a couple of Choices. The create call constructs a new
+# Choice object, does the INSERT statement, adds the choice to the set
+# of available choices and returns the new Choice object. Django creates
+# a set to hold the "other side" of a ForeignKey relation
+# (e.g. a question's choice) which can be accessed via the API.
+>>> q = Question.objects.get(pk=1)
+
+# Display any choices from the related object set -- none so far.
+>>> q.choice_set.all()
+<QuerySet []>
+
+# Create three choices.
+>>> q.choice_set.create(choice_text='Not much', votes=0)
+<Choice: Not much>
+>>> q.choice_set.create(choice_text='The sky', votes=0)
+<Choice: The sky>
+>>> c = q.choice_set.create(choice_text='Just hacking again', votes=0)
+
+# Choice objects have API access to their related Question objects.
+>>> c.question
+<Question: What's up?>
+
+# And vice versa: Question objects get access to Choice objects.
+>>> q.choice_set.all()
+<QuerySet [<Choice: Not much>, <Choice: The sky>, <Choice: Just hacking again>]>
+>>> q.choice_set.count()
+3
+
+# The API automatically follows relationships as far as you need.
+# Use double underscores to separate relationships.
+# This works as many levels deep as you want; there's no limit.
+# Find all Choices for any question whose pub_date is in this year
+# (reusing the 'current_year' variable we created above).
+>>> Choice.objects.filter(question__pub_date__year=current_year)
+<QuerySet [<Choice: Not much>, <Choice: The sky>, <Choice: Just hacking again>]>
+
+# Let's delete one of the choices. Use delete() for that.
+>>> c = q.choice_set.filter(choice_text__startswith='Just hacking')
+>>> c.delete()
+```
+
+
+
+### 뷰 추가하기
+
+Ref : https://docs.djangoproject.com/ko/3.2/intro/tutorial03/
+
+이제, `polls/views.py` 에 뷰를 추가해 봅시다. 이 뷰들은 인수를 받기 때문에 조금 모양이 다릅니다.
+
+```python
+def detail(request, question_id):
+    return HttpResponse("You're looking at question %s." % question_id)
+
+def results(request, question_id):
+    response = "You're looking at the results of question %s."
+    return HttpResponse(response % question_id)
+
+def vote(request, question_id):
+    return HttpResponse("You're voting on question %s." % question_id)
+```
+
+다음의 [`path()`](https://docs.djangoproject.com/ko/3.2/ref/urls/#django.urls.path) 호출을 추가하여 이러한 새로운 뷰를 `polls.urls` 모듈로 연결하세요.
+
+polls/urls.py[¶](https://docs.djangoproject.com/ko/3.2/intro/tutorial03/#id3)
+
+```shell
+from django.urls import path
+
+from . import views
+
+urlpatterns = [
+    # ex: /polls/
+    path('', views.index, name='index'),
+    # ex: /polls/5/
+    path('<int:question_id>/', views.detail, name='detail'),
+    # ex: /polls/5/results/
+    path('<int:question_id>/results/', views.results, name='results'),
+    # ex: /polls/5/vote/
+    path('<int:question_id>/vote/', views.vote, name='vote'),
+]
+```
+
+브라우저에 《/polls/5/》 를 입력해 보세요. 이 주소에 접속하면 `detail()` 함수를 호출하여 URL 에 입력한 ID 를 출력할 것입니다. 《/polls/5/results/》 와 《/polls/5/vote/》 도 실행해 보세요. 투표 결과와 투표 페이지의 뼈대가 되는 페이지가 출력될 것입니다.
+
+![image-20210623114205428](readme.assets/image-20210623114205428.png)
+
+![image-20210623113924983](readme.assets/image-20210623113924983.png)
+
+![image-20210623113930985](readme.assets/image-20210623113930985.png)
+
+![image-20210623113934940](readme.assets/image-20210623113934940.png)
+
+
+
+### 뷰가 실제로 뭔가를 하도록 만들기
+
+각 뷰는 두 가지 중 하나를 하도록 되어 있습니다. 요청된 페이지의 내용이 담긴 [`HttpResponse`](https://docs.djangoproject.com/ko/3.2/ref/request-response/#django.http.HttpResponse) 객체를 반환하거나, 혹은 [`Http404`](https://docs.djangoproject.com/ko/3.2/topics/http/views/#django.http.Http404) 같은 예외를 발생하게 해야합니다. 나머지는 당신에게 달렸습니다.
+
+Django에 필요한 것은 [`HttpResponse`](https://docs.djangoproject.com/ko/3.2/ref/request-response/#django.http.HttpResponse) 객체 혹은 예외입니다.
+
+새로운 `index()` 뷰 하나를 호출했을 때, 시스템에 저장된 최소한 5 개의 투표 질문이 콤마로 분리되어, 발행일에 따라 출력됩니다.
+
+polls/views.py 변경
+
+```python
+from django.http import HttpResponse
+
+from .models import Question
+
+
+def index(request):
+    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    output = ', '.join([q.question_text for q in latest_question_list])
+    return HttpResponse(output)
+
+# Leave the rest of the views (detail, results, vote) unchanged
+```
+
+여기 몇가지 문제가 있습니다. 뷰에서 페이지의 디자인이 하드코딩 되어 있다고 합시다. 만약 페이지가 보여지는 방식을 바꾸고 싶다면, 이 Python 코드를 편집해야만 할 겁니다. 그럼, 뷰에서 사용할 수 있는 템플릿을 작성하여, Python 코드로부터 디자인을 분리하도록 Django의 템플릿 시스템을 사용해 봅시다.
+
+우선, `polls` 디렉토리에 `templates`라는 디렉토리를 만듭니다. Django는 여기서 템플릿을 찾게 될 것입니다.
+
+프로젝트의 [`TEMPLATES`](https://docs.djangoproject.com/ko/3.2/ref/settings/#std:setting-TEMPLATES) 설정은 Django가 어떻게 템플릿을 불러오고 렌더링 할 것인지 기술합니다. 기본 설정 파일은 [`APP_DIRS`](https://docs.djangoproject.com/ko/3.2/ref/settings/#std:setting-TEMPLATES-APP_DIRS) 옵션이 `True`로 설정된 `DjangoTemplates` 백엔드를 구성합니다. 관례에 따라, `DjangoTemplates`은 각 [`INSTALLED_APPS`](https://docs.djangoproject.com/ko/3.2/ref/settings/#std:setting-INSTALLED_APPS) 디렉토리의 《templates》 하위 디렉토리를 탐색합니다
+
+템플릿에 다음과 같은 코드를 입력합니다.
+
+polls/templates/polls/index.html
+
+```python
+{% if latest_question_list %}
+    <ul>
+    {% for question in latest_question_list %}
+        <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
+```
+
+
+
+이제, 템플릿을 이용하여 `polls/views.py`에 `index` 뷰를 업데이트 해보도록 하겠습니다.
+
+```
+from django.http import HttpResponse
+from django.template import loader
+
+from .models import Question
+
+
+def index(request):
+    latest_question_list = Question.objects.order_by('-pub_date')[:5]
+    template = loader.get_template('polls/index.html')
+    context = {
+        'latest_question_list': latest_question_list,
+    }
+    return HttpResponse(template.render(context, request))
+```
+
+저장하고 http://127.0.0.1:8000/polls/ 을 실행시켜보면 만든 질문이 뜨고 이를 누르면 You're looking at question 1이 나옴을 확인할 수있습니다.
+
+(브라우저에서 《/polls/》 페이지를 불러오면, [튜토리얼 2장](https://docs.djangoproject.com/ko/3.2/intro/tutorial02/)에서 작성한 《What’s up》 질문이 포함된 리스트가 표시됩니다. 표시된 질문의 링크는 해당 질문에 대한 세부 페이지를 가리킵니다.)
+
+![image-20210623134750518](readme.assets/image-20210623134750518.png)
+
+![image-20210623134758683](readme.assets/image-20210623134758683.png)
 
